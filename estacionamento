@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+
+// Classe para representar um veículo
+class Veiculo
+{
+    public string Placa { get; set; }
+    public DateTime Entrada { get; set; }
+}
+
+// Classe para representar o estacionamento e suas operações
+class Estacionamento
+{
+    private List<Veiculo> veiculos;
+
+    public Estacionamento()
+    {
+        veiculos = new List<Veiculo>();
+    }
+
+    // Adiciona um veículo ao estacionamento
+    public void AdicionarVeiculo(string placa)
+    {
+        Veiculo novoVeiculo = new Veiculo
+        {
+            Placa = placa,
+            Entrada = DateTime.Now
+        };
+
+        veiculos.Add(novoVeiculo);
+        Console.WriteLine($"Veículo com placa {placa} adicionado ao estacionamento.");
+    }
+
+    // Remove um veículo do estacionamento e exibe o valor cobrado
+    public void RemoverVeiculo(string placa)
+    {
+        Veiculo veiculoRemovido = veiculos.Find(v => v.Placa == placa);
+
+        if (veiculoRemovido != null)
+        {
+            veiculos.Remove(veiculoRemovido);
+
+            // Simplesmente calculando o tempo de estacionamento como exemplo
+            TimeSpan tempoEstacionado = DateTime.Now - veiculoRemovido.Entrada;
+            double valorCobrado = tempoEstacionado.TotalHours * 5; // Valor hipotético de R$5 por hora
+
+            Console.WriteLine($"Veículo com placa {placa} removido do estacionamento.");
+            Console.WriteLine($"Tempo estacionado: {tempoEstacionado.TotalHours} horas");
+            Console.WriteLine($"Valor cobrado: R${valorCobrado}");
+        }
+        else
+        {
+            Console.WriteLine($"Veículo com placa {placa} não encontrado no estacionamento.");
+        }
+    }
+
+    // Lista todos os veículos no estacionamento
+    public void ListarVeiculos()
+    {
+        if (veiculos.Count > 0)
+        {
+            Console.WriteLine("Veículos no estacionamento:");
+            foreach (Veiculo veiculo in veiculos)
+            {
+                Console.WriteLine($"Placa: {veiculo.Placa}, Entrada: {veiculo.Entrada}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Nenhum veículo no estacionamento no momento.");
+        }
+    }
+}
+
+// Exemplo de uso do sistema de estacionamento
+class Program
+{
+    static void Main()
+    {
+        Estacionamento estacionamento = new Estacionamento();
+
+        estacionamento.AdicionarVeiculo("ABC1234");
+        estacionamento.AdicionarVeiculo("XYZ5678");
+
+        estacionamento.ListarVeiculos();
+
+        estacionamento.RemoverVeiculo("ABC1234");
+
+        estacionamento.ListarVeiculos();
+    }
+}
